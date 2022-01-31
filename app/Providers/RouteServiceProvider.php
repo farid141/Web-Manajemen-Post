@@ -17,7 +17,9 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    // public const HOME = '/home';
+    //halaman yang akan dituju ketika tidak memenuhi middleware
+    public const HOME = '/';
 
     /**
      * The controller namespace for the application.

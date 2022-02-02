@@ -58,6 +58,13 @@ Route::get('/dashboard', function () {
     return view('dashboard.index');
 })->middleware(('auth'));
 
+// otomatis akan mengarah ke index jika methodnya get
+// mengarah ke store jika method post
+// method put ke update
+// method delet maka diarahkan ke destroy
+//lebih lengkap dapat dicek dengan php artisan route:list
+Route::get('dashboard/posts/checkSlug', [DashboardPostController::class, 'checkSlug'])->middleware();
+
 Route::resource('/dashboard/posts', DashboardPostController::class)->middleware('auth');
 
 //customizing the key dapat mengubah nilai default dari parameter

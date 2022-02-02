@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
     use HasFactory;
+    use Sluggable;
+
 
     //fitur laravel local scope
     public function scopeFilter($query, array $filters)
@@ -42,7 +45,7 @@ class Post extends Model
 
     //untuk dapat memasukkan beberapa field sekaligus ke database
     //pada command line
-    protected $fillable = ['title', 'excerpt', 'body', 'slug', 'category_id'];
+    protected $fillable = ['title', 'excerpt', 'body', 'slug', 'category_id', 'user_id', 'image'];
     protected $with = ['category', 'author'];
 
     //untuk memproteksi field agar tidak dapat diisi secara langsung
@@ -65,5 +68,14 @@ class Post extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
     }
 }

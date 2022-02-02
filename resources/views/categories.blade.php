@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('container')
-    <h1 class="mb-5">Post Category</h1>
+    <h1 class="mb-5 text-decoration-none">Post Category</h1>
     <article class="mb-3">
 
         <div class="container">

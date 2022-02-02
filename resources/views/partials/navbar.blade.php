@@ -28,7 +28,6 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <li><a class="dropdown-item" href="/dashboard"><i class="bi bi-layout-text-sidebar-reverse"></i>My Dashboard</a></li>
-                    <li><a class="dropdown-divider"></li>
                     <li>
                         <form method="post" action="/logout">
                             @csrf

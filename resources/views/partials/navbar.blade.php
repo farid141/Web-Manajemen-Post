@@ -21,6 +21,8 @@
         </ul>
         
         <ul class="navbar-nav ms-auto">
+
+            {{-- Jika sudah login (auth) --}}
             @auth
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -37,6 +39,8 @@
                         </form>
                     </ul>
                 </li>
+            
+                {{-- Jika belum login (guest) --}}
             @else
             <li class="nav-item">
                 <a href="/login" class="nav-link"><i class="bi bi-box-arrow-in-right "></i> Login</a>

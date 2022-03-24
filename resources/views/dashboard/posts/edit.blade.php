@@ -7,6 +7,8 @@
 
     <div class="col-lg-8">
         <form method="post" action="/dashboard/posts/{{ $post->slug }}" class="mb-3" enctype="multipart/form-data">
+            {{-- method put digunakan untuk melakukan edit melalui model  --}}
+            {{-- macam method dapat dilihat pada perintah php artisan route:list --}}
             @method('put')
 
             @csrf
@@ -52,12 +54,14 @@
 
                 <input type="hidden" name="oldImage" value="{{ $post->image }}">
                 
+                {{-- kalau ada image, pakai gambar lama, kalau baru tampilkan dengan js melalui classnya --}}
                 @if ($post->image)
                     <img src="{{ asset('storage/' . $post->image) }}" class="img-preview img-fluid mb-3 col-sm-5 d-block">
                 @else
                     <img class="img-preview img-fluid mb-3 col-sm-5">
                 @endif
 
+                {{-- kalau ada perubahan pada form upload maka memanggil method preview image  --}}
                 <input class="form-control @error ('image') is-invalid @enderror" type="file" id="image" name="image" onchange="previewImage()">
                 {{-- image tidak menggunakan old (jika error maka harus menginputkan manual kembali) dikarenakan akan mencetak direktori 
                     (alasan keamanan) --}}
@@ -69,7 +73,6 @@
                 @enderror
             </div>
 
-            </div>
             <div class="mb-3">
               <label for="body" class="form-label">Body</label>
               @error('body')

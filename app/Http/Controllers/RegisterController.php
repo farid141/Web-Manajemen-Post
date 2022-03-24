@@ -18,6 +18,8 @@ class RegisterController extends Controller
 
     public function store(Request $request)
     {
+        // pada saat meregister, divalidasi terlebih dahulu
+        // jika tidak memenuhi, maka akan terdapat pesan error
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'username' => ['required', 'min:3', 'max:255', 'unique:users'],
@@ -30,8 +32,11 @@ class RegisterController extends Controller
 
         User::create($validatedData);
 
-        //flasher laravel
+        //flasher laravel dengan mengirimkan session
+
         // $request->session()->flash('success', 'Registration successfull! Please login');
+
+        // lebih pendek
         return redirect('/login')->with('success', 'Registration successfull! Please login');
     }
 }

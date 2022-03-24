@@ -49,4 +49,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
+    public function categories()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    // untuk route model binding menggunakan field usrename
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
 }

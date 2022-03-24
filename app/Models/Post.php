@@ -8,23 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    // model menggunakan factory agar dapat menggenerate data
+    // trait
     use HasFactory;
     use Sluggable;
 
 
-    //fitur laravel local scope
+    //fitur laravel local scope....
+
     public function scopeFilter($query, array $filters)
     {
-        // if (isset($filters['search']) ? $filters['search'] : false) {
-        //     return $query->where('title', 'like', '%' . $filters['search'] . '%')
-        //         ->orWhere('body', 'like', '%' . $filters['search'] . '%');
-        // }
-
-        //mempersingkat fungsi if
-        //when akan mejalankan fungsi didalamnya jika argumen pertama bernilai true
-        //?? (null coalescing operator) akan menggantikan isset null 
-        //when merupakan method laravel, jika sebuah collection memiliki isi
-        //maka akan dijalankan fungsi didalamnya
+        // when(true, fungsi callback/closure)
+        // (a??b), jika a benar, pilih A.jika salah, pilih b
         $query->when($filters['search'] ?? false, function ($query, $search) {
             return $query->where('title', 'like', '%' . $search . '%')
                 ->orWhere('body', 'like', '%' . $search . '%');
@@ -43,18 +38,22 @@ class Post extends Model
         });
     }
 
-    //untuk dapat memasukkan beberapa field sekaligus ke database
-    //pada command line
     protected $fillable = ['title', 'excerpt', 'body', 'slug', 'category_id', 'user_id', 'image'];
+
+    // with digunakan untuk eager loading agar tidak perlu menuliskannya pada controller
     protected $with = ['category', 'author'];
 
-    //untuk memproteksi field agar tidak dapat diisi secara langsung
-    //protected $guarded = ['id'];
-
+    // lazy loading terjadi pada eloquent relationships
     //eager loading melakukan query untuk menyimpan seluruh row melalui
     //query yang lebih sedikit
     //sedangkan lazy eager loading dilakukan pada route yang menggunakan binding
 
+    // static:: digunakan untuk mengakses fungsi statis, sedangkan self:: digunakan untuk
+    // mengakses property statis
+
+    // kita dapat memanggil field model yang berelasi dengan model lain
+    // code dibawah akan mengembalikan baris tabel categories yang memiliki
+    // id yang sama dengan category_id pada tabel post
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -62,9 +61,11 @@ class Post extends Model
 
     public function author()
     {
+        // user_id digunakan untuk menggantikan author_id secara default untuk model binding
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    // untuk route model binding menggunakan field slug
     public function getRouteKeyName()
     {
         return 'slug';
@@ -72,6 +73,7 @@ class Post extends Model
 
     public function sluggable(): array
     {
+        // menggenerate field slug dan mengambil sumber dari field title pada view
         return [
             'slug' => [
                 'source' => 'title'

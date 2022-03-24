@@ -106,6 +106,9 @@ return [
     |
     */
 
+    // faker akan menggunakan variabel FAKER_LOCALE  di file .env
+    // jika tidak ada variabel, maka menggunakan parameter ke dua
+
     'faker_locale' => env('FAKER_LOCALE', 'en_US'),
 
     /*

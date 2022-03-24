@@ -7,6 +7,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardPostController;
+use App\Http\Controllers\AdminCategoryController;
+use App\Http\Controllers\AdminUsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,8 +38,10 @@ Route::get('/about', function () {
 
 Route::get('/posts', [PostController::class, 'index']);
 
-//Route Single Post
-Route::get('posts/{post:slug}', [PostController::class, 'show']);
+// Route Single Post menggunakan route implicit model binding
+// akan mengirimkan object menggunakan field slug  
+// menuju method show dalam class PostController
+Route::get('/posts/{post:slug}', [PostController::class, 'show']);
 
 Route::get('/categories', function () {
     return view('categories', [
@@ -46,6 +50,12 @@ Route::get('/categories', function () {
     ]);
 });
 
+// middleware digunakan untuk membatasi tampilan ketika user telah login
+// dapat diakses melalui app/middleware/kernel.php
+// jika middleware gagal, maka akan diarahkan ke route default 
+// yang dapat diatur pada app/providers/routeserviceprovider.php
+
+// name(login) digunakan untuk named route agar authenticate dpat jalan
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'authenticate']);
 
@@ -58,20 +68,30 @@ Route::get('/dashboard', function () {
     return view('dashboard.index');
 })->middleware(('auth'));
 
+Route::get('dashboard/posts/checkSlug', [DashboardPostController::class, 'checkSlug'])->middleware();
+
 // otomatis akan mengarah ke index jika methodnya get
 // mengarah ke store jika method post
 // method put ke update
 // method delet maka diarahkan ke destroy
-//lebih lengkap dapat dicek dengan php artisan route:list
-Route::get('dashboard/posts/checkSlug', [DashboardPostController::class, 'checkSlug'])->middleware();
+// lebih lengkap dapat dicek dengan php artisan route:list
 
+// controller resource memiliki beberapa method CRUD terhadap model yang tergenerate otomatis
 Route::resource('/dashboard/posts', DashboardPostController::class)->middleware('auth');
+
+// membuat middleware sendiri
+// php artisan make middleware
+// pergi ke folder middleware
+// kemudian masukkan nama middleware ke kernel.php 
+Route::resource('/dashboard/categories', AdminCategoryController::class)->except('show')->middleware('admin');
+
+Route::resource('/dashboard/users', AdminUsersController::class)->except('show')->middleware('admin');
 
 //customizing the key dapat mengubah nilai default dari parameter
 //ditulis pada file model
 
 //resource controller dilakukan untuk CRUD
-
+// Load merupakan lazy eager loading yang dilakukan pada route model binding
 // Route::get('/categories/{category:slug}', function (Category $category) {
 //     return view('posts', [
 //         'title' => "Post by Category :$category->name",

@@ -15,8 +15,15 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
+
+    //  untuk dapat membuat model sekaligus dengan migration, factory, dan seeder
+    // kita dapat menggunakan "php artisan make:model nama_model -mfs"
+
     public function run()
     {
+
+        // untuk mengubah asal data faker berdasarkan negara
+        // kita dapat mengubah file config/app.php dan mengganti FAKER_LOCALE
 
         User::create([
             'name' => 'Farid Nubaili',
@@ -24,12 +31,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'faridnubaili@gmail.com',
             'password' => bcrypt('12345')
         ]);
-
-        // User::create([
-        //     'name' => 'Khairuzzimam',
-        //     'email' => 'khairuzzimam@gmail.com',
-        //     'password' => bcrypt('12345')
-        // ]);
 
         User::factory(3)->create();
 

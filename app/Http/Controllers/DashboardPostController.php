@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class DashboardPostController extends Controller
 {
+    // masing masing method memiliki 
     /**
      * Display a listing of the resource.
      *
@@ -19,6 +20,7 @@ class DashboardPostController extends Controller
      */
     public function index()
     {
+        // ambilkan data Post dimana user_id sama dengan user id yang sedang login
         return view('dashboard.posts.index', [
             'posts' => Post::where('user_id', auth()->user()->id)->get()
         ]);
@@ -29,6 +31,7 @@ class DashboardPostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // mengarahkan ke view create dan mengirimkan data category name
     public function create()
     {
         return view('dashboard.posts.create', [
@@ -42,11 +45,17 @@ class DashboardPostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    //  membuat post baru dengan validasi
     public function store(Request $request)
     {
-        //dump die debug
-        // ddd($request);
-        //;arave; memiliki filesystem powerful bernama flysystem
+        // laravel memiliki filesystem powerful bernama flysystem
+        // filesystem.php untuk mengatur lokasi penyimpanan
+        // dapat kita atur ke public agar dapat diakses
+        // kemudian buat symbolic link dengan perintah
+        // php artisan storage:link
+        // kemudian untuk mengakses file dapat dilakukan dengan method
+        // asset('path file terhadap public')
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'slug' => 'required|unique:posts',
@@ -55,10 +64,13 @@ class DashboardPostController extends Controller
             'body' => 'required'
         ]);
 
+        // jika ada image yang masuk, maka file image akan disimpan dalam post-images dan database
+        // store mengembalikan path
         if ($request->file('image')) {
             $validatedData['image'] = $request->file('image')->store('post-images');
         }
 
+        // mendapatkan userid dari user yang mengupload
         $validatedData['user_id'] = auth()->user()->id;
 
         //menggunakan string helper atau limit untuk memotong string panjang
@@ -123,6 +135,7 @@ class DashboardPostController extends Controller
 
         if ($request->file('image')) {
             if ($request->oldImage) {
+                // menghapus file image lama
                 Storage::delete($request->oldImage);
             }
             //menyimpan image dan mengupload path ke database
@@ -144,14 +157,17 @@ class DashboardPostController extends Controller
     public function destroy(Post $post)
     {
         if ($post->image) {
+            // mendelete file di storage
             Storage::delete($post->image);
         }
 
+        // mendelete data di database
         Post::destroy($post->id);
 
         return redirect('dashboard/posts')->with('success', 'Posts has been deleted');
     }
 
+    // menggenerate slug unik berdasarkan title 
     public function checkSlug(Request $request)
     {
         $slug = SlugService::createSlug(Post::class, 'slug', $request->title);

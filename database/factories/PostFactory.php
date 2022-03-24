@@ -27,6 +27,9 @@ class PostFactory extends Factory
             //     }),
 
             //errow function mapping
+            // paragraphs akan mengembalikan kalimat dalam array, tiap array dipisah oleh tag p
+            // menggunakan map, tiap array ($p) dibungkus tag p
+            // implode akan menggabungkan array dengan delimiter ''
             'body' => collect($this->faker->paragraphs(mt_rand(5, 10)))
                 ->map(fn ($p) => "<p>$p</p>")
                 ->implode(''),

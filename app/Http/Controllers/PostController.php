@@ -25,6 +25,7 @@ class PostController extends Controller
         return view('posts', [
             "title" => "All Posts " . $title,
             // "posts" => Post::all()
+            //with query string dilakukan untk menyimpan query sebelumnya
             "posts" => Post::latest()->filter(request(['search', 'category', 'author']))
                 ->paginate(7)->withQueryString()
         ]);

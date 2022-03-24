@@ -7,7 +7,10 @@ use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
-    //pabrik untuk menggenerate user fake
+    // pabrik untuk menggenerate user fake
+    // 
+
+
     /**
      * Define the model's default state.
      *

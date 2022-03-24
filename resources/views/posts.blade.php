@@ -6,13 +6,17 @@
 
         <div class="row justify-content-center mb-3">
             <div class="col-md-6">
+                {{-- form akan mengirimkan data GET category, author dan search ke url dan dapat ditangkap (request) --}}
+                {{-- Hal ini dilakukan agar dapat melakukan search pada category dan author --}}
                 <form action="/posts">
                     @if (request('category'))
                         <input type="hidden" name="category" value="{{request('category')}}">
                     @endif
+
                     @if (request('author'))
                         <input type="hidden" name="author" value="{{request('author')}}">
                     @endif
+
                     <div class="input-group">
                         <input type="text" class="form-control text-decoration-none" placeholder="Search..." name="search" value="{{ request('search') }}">
                         <button class="btn btn-danger text-decoration-none" type="submit" id="button-addon2">Search</button>
@@ -41,7 +45,8 @@
                             in 
                             <a href="/posts?category={{ $posts[0]->category->slug }}" class="text-decoration-none">
                                 {{ $posts[0]->category->name }}
-                                {{-- library carbon untuk mengatur waktu, sudah ada dalam laravel --}}
+            
+            {{-- library carbon untuk mengatur waktu, sudah ada dalam laravel --}}
                             </a>{{$posts[0]->created_at->diffForHumans()}}
                         </p>
                     </small>
@@ -87,6 +92,9 @@
             <p class="text-center fs-4">No Post Found.</p>
         @endif
 
+        {{-- pagination --}}
+        {{-- untuk menonaktifkan bootstrap saja, akses app/providers/appserviceProviders --}}
+        {{-- karena default dari pagination menggunakan tailwind --}}
         <div class="d-flex justify-content-end">
             {{ $posts->links() }}
         </div>

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Auth\Middleware\Authorize;
+use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+// controller dapat memanggil object model
+class AdminCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        // menggunakan GATE admin untuk membatasi view post categories 
+        $this->authorize('admin');
+
+        return view('dashboard.categories.index', [
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -31,10 +37,10 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCategoryRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -42,10 +48,10 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Category  $category
+     * @param  \App\Models\category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(category $category)
     {
         //
     }
@@ -53,10 +59,10 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Category  $category
+     * @param  \App\Models\category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(category $category)
     {
         //
     }
@@ -64,11 +70,11 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCategoryRequest  $request
-     * @param  \App\Models\Category  $category
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(Request $request, category $category)
     {
         //
     }
@@ -76,10 +82,10 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Category  $category
+     * @param  \App\Models\category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(category $category)
     {
         //
     }
